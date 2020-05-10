@@ -1,0 +1,7 @@
+export const ADD_BOOKS = "ADD_BOOKS";
+export const REMOVE_BOOKS = "REMOVE_BOOKS";
+export const SHOW_LOADER = "SHOW_LOADER";
+export const REMOVE_LOADER = "REMOVE_LOADER";
+export const SHOW_ERROR = "SHOW_ERROR";
+export const HIDE_ERROR = "HIDE_ERROR";
+export const FETCH_BOOKLIST_SUCCESS = "FETCH_BOOKLIST_SUCCESS";
