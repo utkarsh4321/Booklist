@@ -1,4 +1,5 @@
 import React, { createContext, useReducer, useEffect } from "react";
+import { useGetTodos } from "../CostumHooks/useRestApi";
 export const BookListContext = createContext();
 
 //Initializing the initial state
@@ -30,25 +31,27 @@ const reducer = (state, action) => {
 };
 
 const BookListContextProvide = (props) => {
-  const [state, dispatch] = useReducer(reducer, InitialState);
+  // const [state, dispatch] = useReducer(reducer, InitialState);
+  const [state, fetchData] = useGetTodos();
   useEffect(() => {
-    let booksData = [];
-    // localStorage.todo = JSON.stringify(state.books);
+    fetchData();
+    // let booksData = [];
+    // // localStorage.todo = JSON.stringify(state.books);
 
-    fetch("https://test-projects-dacb2.firebaseio.com/todo.json")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          Object.entries(data).forEach(([key, value]) => {
-            booksData.push({ id: key, ...value });
-          });
-        }
-        dispatch({ type: "LOAD_LOCAL_STORAGE_DATA", payload: booksData });
-      });
+    // fetch("https://test-projects-dacb2.firebaseio.com/todo.json")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     if (data) {
+    //       Object.entries(data).forEach(([key, value]) => {
+    //         booksData.push({ id: key, ...value });
+    //       });
+    //     }
+    //     dispatch({ type: "LOAD_LOCAL_STORAGE_DATA", payload: booksData });
+    //   });
   }, []);
   return (
-    <BookListContext.Provider value={{ state, dispatch }}>
+    <BookListContext.Provider value={{ state }}>
       {props.children}
     </BookListContext.Provider>
   );
