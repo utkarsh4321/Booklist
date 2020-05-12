@@ -35,23 +35,9 @@ const BookListContextProvide = (props) => {
   const [state, fetchData] = useGetTodos();
   useEffect(() => {
     fetchData();
-    // let booksData = [];
-    // // localStorage.todo = JSON.stringify(state.books);
-
-    // fetch("https://test-projects-dacb2.firebaseio.com/todo.json")
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     if (data) {
-    //       Object.entries(data).forEach(([key, value]) => {
-    //         booksData.push({ id: key, ...value });
-    //       });
-    //     }
-    //     dispatch({ type: "LOAD_LOCAL_STORAGE_DATA", payload: booksData });
-    //   });
   }, []);
   return (
-    <BookListContext.Provider value={{ state }}>
+    <BookListContext.Provider value={{ state, fetchData }}>
       {props.children}
     </BookListContext.Provider>
   );

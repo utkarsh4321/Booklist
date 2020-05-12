@@ -1,0 +1,10 @@
+{
+  "editor.semanticTokenColorCustomizations": {
+    "enabled": false,
+    "rules": {
+      "property.readonly": "#35166d",
+      "variable": "#ff0000",
+      "*.declaration": { "bold": true }
+    }
+  }
+}

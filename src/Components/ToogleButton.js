@@ -11,7 +11,7 @@ import { BookListContext } from "../Context/BookList";
 // export default ToogleButton;
 
 const ToogleButton = () => {
-  const { state, dispatch } = useContext(BookListContext);
+  const { state, fetchData } = useContext(BookListContext);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const bookTitleInput = useRef(null);
@@ -27,24 +27,9 @@ const ToogleButton = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    fetch("https://test-projects-dacb2.firebaseio.com/todo.json", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify({ title, author }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        dispatch({
-          type: "ADD_BOOKS",
-          payload: { title, author, id: data.name },
-        });
-        setAuthor("");
-        setTitle("");
-      })
-      .catch((err) => console.log(err));
+    fetchData({ method: "POST", params: { title, author } });
+    setTitle("");
+    setAuthor("");
   };
   function onKeyTitleHandler(e) {
     if (e.key === "Enter") {

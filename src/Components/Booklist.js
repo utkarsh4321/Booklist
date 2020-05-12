@@ -31,7 +31,7 @@ import { BookListContext } from "../Context/BookList";
 
 // export default Booklist;
 function Booklist(props) {
-  const { state, dispatch } = useContext(BookListContext);
+  const { state, fetchData } = useContext(BookListContext);
 
   return (
     <div className="book-list">
@@ -44,12 +44,7 @@ function Booklist(props) {
                 <div className="author">{author}</div>
               </div>
               <button
-                onClick={() =>
-                  dispatch({
-                    type: "DELETE_BOOKS",
-                    payload: id,
-                  })
-                }
+                onClick={() => fetchData({ method: "DELETE", params: id })}
                 className="remove_btn"
               >
                 X
