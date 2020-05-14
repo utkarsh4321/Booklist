@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/Booklist/static/css/main.2eeb6a86.chunk.css",
-    "main.js": "/Booklist/static/js/main.82665f84.chunk.js",
-    "main.js.map": "/Booklist/static/js/main.82665f84.chunk.js.map",
+    "main.js": "/Booklist/static/js/main.ff656dcd.chunk.js",
+    "main.js.map": "/Booklist/static/js/main.ff656dcd.chunk.js.map",
     "runtime-main.js": "/Booklist/static/js/runtime-main.e5780e6d.js",
     "runtime-main.js.map": "/Booklist/static/js/runtime-main.e5780e6d.js.map",
-    "static/js/2.033dd8e9.chunk.js": "/Booklist/static/js/2.033dd8e9.chunk.js",
-    "static/js/2.033dd8e9.chunk.js.map": "/Booklist/static/js/2.033dd8e9.chunk.js.map",
+    "static/js/2.946313bc.chunk.js": "/Booklist/static/js/2.946313bc.chunk.js",
+    "static/js/2.946313bc.chunk.js.map": "/Booklist/static/js/2.946313bc.chunk.js.map",
     "index.html": "/Booklist/index.html",
-    "precache-manifest.ffc8545acf4004fdb9df2769767dd8f4.js": "/Booklist/precache-manifest.ffc8545acf4004fdb9df2769767dd8f4.js",
+    "precache-manifest.3b172fd61b86d1391d723f1241d0c38a.js": "/Booklist/precache-manifest.3b172fd61b86d1391d723f1241d0c38a.js",
     "service-worker.js": "/Booklist/service-worker.js",
     "static/css/main.2eeb6a86.chunk.css.map": "/Booklist/static/css/main.2eeb6a86.chunk.css.map",
-    "static/js/2.033dd8e9.chunk.js.LICENSE.txt": "/Booklist/static/js/2.033dd8e9.chunk.js.LICENSE.txt"
+    "static/js/2.946313bc.chunk.js.LICENSE.txt": "/Booklist/static/js/2.946313bc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e5780e6d.js",
-    "static/js/2.033dd8e9.chunk.js",
+    "static/js/2.946313bc.chunk.js",
     "static/css/main.2eeb6a86.chunk.css",
-    "static/js/main.82665f84.chunk.js"
+    "static/js/main.ff656dcd.chunk.js"
   ]
 }
