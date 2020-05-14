@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { BookListContext } from "../Context/BookList";
 
 // class Booklist extends Component {
@@ -32,6 +32,10 @@ import { BookListContext } from "../Context/BookList";
 // export default Booklist;
 function Booklist(props) {
   const { state, fetchData } = useContext(BookListContext);
+  const [isUpdateButtonClicked, setUpdates] = useState(false);
+  const updateHandler = () => {
+    setUpdates(!isUpdateButtonClicked);
+  };
 
   return (
     <div className="book-list">
@@ -40,9 +44,18 @@ function Booklist(props) {
           {state.books.map(({ id, title, author }) => (
             <li key={id} className="booklist__item">
               <div className="content">
-                <div className="title">{title}</div>
+                <div className="title">
+                  {(isUpdateButtonClicked && (
+                    <input type="text" value={title} onChange={() => null} />
+                  )) ||
+                    title}
+                </div>
                 <div className="author">{author}</div>
               </div>
+              {/*<button onClick={() => fetchData({ method: "id", params: id })}>
+                Update
+          </button>*/}
+              <button onClick={updateHandler}>Update</button>
               <button
                 onClick={() => fetchData({ method: "DELETE", params: id })}
                 className="remove_btn"

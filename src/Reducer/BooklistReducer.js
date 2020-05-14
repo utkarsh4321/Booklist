@@ -8,6 +8,9 @@ import {
   REMOVE_LOADER,
   SHOW_ERROR,
   HIDE_ERROR,
+  SET_INPUT_AUTHOR,
+  SET_INPUT_TITLE,
+  GET_SINGLE_BOOKLIST_SUCCESS,
 } from "../Actions/actionTypes";
 
 export const initialState = {
@@ -15,6 +18,9 @@ export const initialState = {
   loader: false,
   error: false,
   errorMessage: "",
+  author: "",
+  title: "",
+  isUpdateButtonClicked: false,
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -55,6 +61,23 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         error: false,
         errorMessage: "",
+      };
+    case SET_INPUT_AUTHOR:
+      return {
+        ...state,
+        author: payload,
+      };
+    case SET_INPUT_TITLE:
+      return {
+        ...state,
+        title: payload,
+      };
+    case GET_SINGLE_BOOKLIST_SUCCESS:
+      return {
+        ...state,
+        author: payload.author,
+        title: payload.title,
+        isUpdateButtonClicked: true,
       };
     default:
       return state;

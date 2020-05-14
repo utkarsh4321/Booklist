@@ -6,6 +6,9 @@ import {
   HIDE_ERROR,
   REMOVE_LOADER,
   FETCH_BOOKLIST_SUCCESS,
+  SET_INPUT_TITLE,
+  SET_INPUT_AUTHOR,
+  GET_SINGLE_BOOKLIST_SUCCESS,
 } from "./actionTypes";
 
 export const addBooksAction = (response) => ({
@@ -31,5 +34,20 @@ export const removeErrorAction = () => ({ type: HIDE_ERROR });
 
 export const fetchBooklistSucces = (response) => ({
   type: FETCH_BOOKLIST_SUCCESS,
+  payload: response,
+});
+
+export const setInputTitle = (response) => ({
+  type: SET_INPUT_TITLE,
+  payload: response,
+});
+
+export const setInputAuthor = (response) => ({
+  type: SET_INPUT_AUTHOR,
+  payload: response,
+});
+
+export const getSingleBooklist = (response) => ({
+  type: GET_SINGLE_BOOKLIST_SUCCESS,
   payload: response,
 });
