@@ -4,13 +4,13 @@ export const BookListContext = createContext();
 
 const BookListContextProvide = (props) => {
   // const [state, dispatch] = useReducer(reducer, InitialState);
-  const [state, fetchData] = useGetTodos();
+  const [state, fetchData, dispatch] = useGetTodos();
   useEffect(() => {
     fetchData();
     return () => console.log("Please remove me");
   }, [fetchData]);
   return (
-    <BookListContext.Provider value={{ state, fetchData }}>
+    <BookListContext.Provider value={{ state, fetchData, dispatch }}>
       {props.children}
     </BookListContext.Provider>
   );

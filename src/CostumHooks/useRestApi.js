@@ -5,6 +5,8 @@ import {
   addBooksAction,
   removeBooksAction,
   getSingleBooklist,
+  setUpdateInputs,
+  setInputTitle,
 } from "../Actions/bookListActions";
 // Creating the MY custum hooks
 
@@ -80,17 +82,24 @@ export const useGetTodos = () => {
     }
     // METHOD for the update
     if (method === "UPDATE") {
-      fetch(`https://test-projects-dacb2.firebaseio.com/todo/${params}/.json`, {
-        method: "UPDATE",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        // body: JSON.stringify(params),
-      })
+      fetch(
+        `https://test-projects-dacb2.firebaseio.com/todo/${params.id}/.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(params.data),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          dispatch(removeBooksAction(params));
+          console.log(data, "This is updated data");
+          dispatch(getSingleBooklist(data));
+          dispatch(setUpdateInputs(""));
+          dispatch(setInputTitle({ id: "", title: "", author: "", index: "" }));
+
+          // dispatch(removeBooksAction(params));
           // dispatch({
           //   type: "DELETE_BOOKS",
           //   payload: id,
@@ -135,5 +144,5 @@ export const useGetTodos = () => {
 
     return () => console.log("Just wipe me out");
   }, []);
-  return [state, fetchData];
+  return [state, fetchData, dispatch];
 };
