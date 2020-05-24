@@ -17,13 +17,16 @@ export const useGetTodos = () => {
     let booksData = [];
     // localStorage.todo = JSON.stringify(state.books);
     if (method === "GET") {
-      fetch("https://test-projects-dacb2.firebaseio.com/todo.json")
+      fetch(
+        `https://booklist-project-32f2a.firebaseio.com/todos.json?orderByKey="index"&print=pretty`
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           if (data) {
             Object.entries(data).forEach(([key, value]) => {
-              booksData.push({ id: key, ...value });
+              booksData[value.index] = { id: key, ...value };
+              // booksData.push({ id: key, ...value });
             });
           }
           dispatch(fetchBooklistSucces(booksData));
@@ -34,7 +37,7 @@ export const useGetTodos = () => {
     }
 
     if (method === "POST") {
-      fetch("https://test-projects-dacb2.firebaseio.com/todo.json", {
+      fetch("https://booklist-project-32f2a.firebaseio.com/todos.json", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -55,13 +58,16 @@ export const useGetTodos = () => {
         .catch((err) => console.log(err));
     }
     if (method === "DELETE") {
-      fetch(`https://test-projects-dacb2.firebaseio.com/todo/${params}/.json`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        // body: JSON.stringify(params),
-      })
+      fetch(
+        `https://booklist-project-32f2a.firebaseio.com/todos/${params}/.json`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          // body: JSON.stringify(params),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
@@ -83,7 +89,7 @@ export const useGetTodos = () => {
     // METHOD for the update
     if (method === "UPDATE") {
       fetch(
-        `https://test-projects-dacb2.firebaseio.com/todo/${params.id}/.json`,
+        `https://booklist-project-32f2a.firebaseio.com/todos/${params.id}/.json`,
         {
           method: "PATCH",
           headers: {
@@ -115,17 +121,29 @@ export const useGetTodos = () => {
         .catch((err) => console.log(err));
     }
     // Get the single element
-    if (method === "id") {
-      fetch(`https://test-projects-dacb2.firebaseio.com/todo/${params}/.json`, {
-        method: "GET",
+    if (method === "PUT") {
+      console.log(params, "This is going on");
+      let booksData = [];
+      fetch(`https://booklist-project-32f2a.firebaseio.com/todos.json`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        // body: JSON.stringify(params),
+        body: JSON.stringify(params),
       })
         .then((res) => res.json())
         .then((data) => {
-          dispatch(getSingleBooklist(data));
+          console.log(data);
+
+          if (data) {
+            Object.entries(data).forEach(([key, value]) => {
+              booksData[value.index] = { id: key, ...value };
+              // booksData.push({ id: key, ...value });
+            });
+          }
+          dispatch(fetchBooklistSucces(booksData));
+
+          // dispatch(getSingleBooklist(data));
           // dispatch(removeBooksAction(params));
           // dispatch({
           //   type: "DELETE_BOOKS",

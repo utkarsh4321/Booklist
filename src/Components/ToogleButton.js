@@ -27,7 +27,15 @@ const ToogleButton = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    fetchData({ method: "POST", params: { title, author } });
+    let storedBooks = [...state.books];
+    if (storedBooks.length) {
+      fetchData({
+        method: "POST",
+        params: { title, author, index: storedBooks.length - 1 + 1 },
+      });
+    } else {
+      fetchData({ method: "POST", params: { title, author, index: 0 } });
+    }
     setTitle("");
     setAuthor("");
   };

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { BookListContext } from "../Context/BookList";
-
+import React from "react";
+// import { BookListContext } from "../Context/BookList";
+import { Link } from "react-router-dom";
 // const CouunterContext = React.createContext("123");
 
 // class Navbar extends Component {
@@ -41,12 +41,18 @@ import { BookListContext } from "../Context/BookList";
 
 // export default Navbar;
 function Navbar(props) {
-  const { state } = useContext(BookListContext);
   return (
-    <nav>
-      <h1>My Booklist on react hooks</h1>
-      <p>Currently we have {state.books.length} books </p>
-    </nav>
+    <ul>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="login">Login</Link>
+      </li>
+      <li>
+        <Link to="signup">Signup</Link>
+      </li>
+    </ul>
   );
 }
 export default Navbar;

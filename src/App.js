@@ -1,18 +1,23 @@
 import React from "react";
 import Navbar from "./Components/Navbar";
-import Booklist from "./Components/Booklist";
-import BookListContextProvide from "./Context/BookList";
-import ToogleButton from "./Components/ToogleButton";
+
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
 
 function App() {
   return (
-    <div className="App">
-      <BookListContextProvide>
+    <Router>
+      <div className="App">
         <Navbar />
-        <ToogleButton />
-        <Booklist />
-      </BookListContextProvide>
-    </div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

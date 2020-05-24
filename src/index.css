@@ -49,3 +49,10 @@ nav ul li {
   border: none;
   cursor: pointer;
 }
+.over {
+  opacity: 0.4;
+  border: 2px solid orangered;
+}
+.active {
+  opacity: 1;
+}
