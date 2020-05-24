@@ -7,8 +7,8 @@ import {
   REMOVE_LOADER,
   FETCH_BOOKLIST_SUCCESS,
   SET_INPUT_TITLE,
-  SET_INPUT_AUTHOR,
   GET_SINGLE_BOOKLIST_SUCCESS,
+  SET_UPDATE_INPUTS,
 } from "./actionTypes";
 
 export const addBooksAction = (response) => ({
@@ -42,12 +42,16 @@ export const setInputTitle = (response) => ({
   payload: response,
 });
 
-export const setInputAuthor = (response) => ({
-  type: SET_INPUT_AUTHOR,
-  payload: response,
-});
+// export const setInputAuthor = (response) => ({
+//   type: SET_INPUT_AUTHOR,
+//   payload: response,
+// });
 
 export const getSingleBooklist = (response) => ({
   type: GET_SINGLE_BOOKLIST_SUCCESS,
+  payload: response,
+});
+export const setUpdateInputs = (response) => ({
+  type: SET_UPDATE_INPUTS,
   payload: response,
 });
