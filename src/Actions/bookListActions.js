@@ -12,6 +12,7 @@ import {
   AUTH_STARTED,
   AUTH_REQUEST_SUCCESS,
   AUTH_REQUEST_FAIL,
+  RESET_LOADERS,
 } from "./actionTypes";
 
 export const addBooksAction = (response) => ({
@@ -70,6 +71,12 @@ export const authRequestSuccess = (response) => ({
   payload: response,
 });
 
-export const authFails = () => ({
+export const authFails = (payload) => ({
   type: AUTH_REQUEST_FAIL,
+  payload,
+});
+
+export const resetLoaders = (payload) => ({
+  type: RESET_LOADERS,
+  payload,
 });
