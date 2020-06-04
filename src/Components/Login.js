@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 
 const Login = () => {
-  const { state, onAuth, dispatch } = useContext(AuthContext);
+  const { state, onAuth } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,13 +14,26 @@ const Login = () => {
     if (email.length > 0 && password.length > 0) {
       onAuth({
         method: "SIGNIN",
-        params: { email, password, message: "Login successFully" },
+        params: { email, password },
       });
     }
   };
+
+  // console.log(state, "This is state from login");
+  const {
+    showLoader,
+    showError,
+    authError,
+    authMessage,
+    successedNotification,
+  } = state;
+
   return (
     <div>
       <h3>Login</h3>
+      {showLoader && <div>Loading...</div>}
+      {showError && <div>{authError}</div>}
+      {successedNotification && <div>{authMessage}</div>}
       <form onSubmit={onSubmitHandler}>
         <input
           type="email"

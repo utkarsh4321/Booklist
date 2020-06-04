@@ -19,7 +19,17 @@ const Signup = (props) => {
   const onFormSunbmitHandler = (e) => {
     e.preventDefault();
     if (email.length > 0 && password.length > 0) {
-      onAuth({ method: "SIGNUP", params: { email, password } });
+      onAuth({
+        method: "SIGNUP",
+        params: {
+          email,
+          password,
+          displayName,
+        },
+      });
+      setPasswrod("");
+      setEmail("");
+      setName("");
       // defaultProject
       //   .auth()
       //   .createUserWithEmailAndPassword(email, password)
@@ -44,7 +54,7 @@ const Signup = (props) => {
       dispatch(resetLoaders(false));
     }, 3000);
   }
-  console.log(state);
+  // console.log(state);
   return (
     <div>
       <h3>signup</h3>

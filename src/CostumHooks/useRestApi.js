@@ -18,11 +18,13 @@ export const useGetTodos = () => {
     // localStorage.todo = JSON.stringify(state.books);
     if (method === "GET") {
       fetch(
-        `https://booklist-project-32f2a.firebaseio.com/todos.json?orderByKey="index"&print=pretty`
+        `https://booklist-project-32f2a.firebaseio.com/todos.json?orderBy="userId"&equalTo=${localStorage.getItem(
+          "userId"
+        )}`
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data) {
             Object.entries(data).forEach(([key, value]) => {
               booksData[value.index] = { id: key, ...value };
@@ -32,7 +34,7 @@ export const useGetTodos = () => {
           dispatch(fetchBooklistSucces(booksData));
         })
         .catch(({ message }) => {
-          console.log(message);
+          // console.log(message);
         });
     }
 
@@ -46,7 +48,7 @@ export const useGetTodos = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           dispatch(addBooksAction({ ...params, id: data.name }));
           // dispatch({
           //   type: "ADD_BOOKS",
@@ -70,7 +72,7 @@ export const useGetTodos = () => {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           dispatch(removeBooksAction(params));
           // dispatch({
           //   type: "DELETE_BOOKS",
@@ -100,7 +102,7 @@ export const useGetTodos = () => {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log(data, "This is updated data");
+          // console.log(data, "This is updated data");
           dispatch(getSingleBooklist(data));
           dispatch(setUpdateInputs(""));
           dispatch(setInputTitle({ id: "", title: "", author: "", index: "" }));
@@ -122,7 +124,7 @@ export const useGetTodos = () => {
     }
     // Get the single element
     if (method === "PUT") {
-      console.log(params, "This is going on");
+      // console.log(params, "This is going on");
       let booksData = [];
       fetch(`https://booklist-project-32f2a.firebaseio.com/todos.json`, {
         method: "PUT",
@@ -133,7 +135,7 @@ export const useGetTodos = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
 
           if (data) {
             Object.entries(data).forEach(([key, value]) => {

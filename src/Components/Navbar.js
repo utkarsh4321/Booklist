@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 // import { BookListContext } from "../Context/BookList";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
+import { authLogout } from "../Actions/bookListActions";
 // const CouunterContext = React.createContext("123");
 
 // class Navbar extends Component {
@@ -41,16 +43,33 @@ import { Link } from "react-router-dom";
 
 // export default Navbar;
 function Navbar(props) {
+  const { state, dispatch } = useContext(AuthContext);
+  const history = useHistory();
+  const onLogout = () => {
+    dispatch(authLogout());
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    history.push("/");
+  };
   return (
     <ul>
       <li>
         <Link to="/">Home</Link>
       </li>
+
+      {state?.authData?.idToken ? null : (
+        <li>
+          <Link to="login">Login</Link>
+        </li>
+      )}
       <li>
-        <Link to="login">Login</Link>
-      </li>
-      <li>
-        <Link to="signup">Signup</Link>
+        {state?.authData?.idToken ? (
+          <button type="button" onClick={onLogout}>
+            Logout
+          </button>
+        ) : (
+          <Link to="signup">Signup</Link>
+        )}
       </li>
     </ul>
   );

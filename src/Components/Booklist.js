@@ -4,7 +4,6 @@ import {
   setUpdateInputs,
   setInputTitle,
   fetchBooklistSucces,
-  getSingleBooklist,
 } from "../Actions/bookListActions";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -77,7 +76,7 @@ function Booklist(props) {
 
   function updateHandler(bookObj, e) {
     e.stopPropagation();
-    console.log(bookObj);
+    // console.log(bookObj);
     // bookUpdateTitleInput.current.focus();
     setUpdates(bookObj);
     setTimeout(() => {
@@ -140,13 +139,13 @@ function Booklist(props) {
     if (result.destination.index === result.source.index) {
       return;
     }
-    console.log(result.destination, result.source);
+    // console.log(result.destination, result.source);
     const items = reorder(
       state.books,
       result.source.index,
       result.destination.index
     );
-    console.log(items);
+    // console.log(items);
     dispatch(fetchBooklistSucces(items));
     let obj = {};
     for (let i = 0; i <= items.length - 1; i++) {

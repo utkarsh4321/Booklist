@@ -13,6 +13,9 @@ import {
   AUTH_REQUEST_SUCCESS,
   AUTH_REQUEST_FAIL,
   RESET_LOADERS,
+  AUTH_LOGOUT,
+  CHECKAUTH,
+  FRESHEDLOGIN,
 } from "./actionTypes";
 
 export const addBooksAction = (response) => ({
@@ -79,4 +82,20 @@ export const authFails = (payload) => ({
 export const resetLoaders = (payload) => ({
   type: RESET_LOADERS,
   payload,
+});
+
+export const authLogout = () => ({
+  type: AUTH_LOGOUT,
+});
+
+export const checkAuth = (response) => {
+  return {
+    type: CHECKAUTH,
+    payload: response || false,
+  };
+};
+
+export const freshedLogin = (response) => ({
+  type: FRESHEDLOGIN,
+  payload: response || false,
 });
