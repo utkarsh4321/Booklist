@@ -1,25 +1,24 @@
 import React, { useEffect, useContext } from "react";
-import { AuthContext } from "./Context/AuthContext";
+import Navbar from "./Components/Navbar";
 
-// // import Navbar from "./Components/Navbar";
+import { Switch, Route, useHistory, Redirect } from "react-router-dom";
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import { AuthContext } from "./Context/AuthContext";
 import {
   checkAuth,
   authRequestSuccess,
   authLogout,
 } from "./Actions/bookListActions";
-import { Switch, Route, Redirect, useHistory } from "react-router-dom";
-import Home from "./Components/Home";
-import Login from "./Components/Login";
-import Signup from "./Components/Signup";
-import UserList from "./Components/UserList";
 import PrivateRoute from "./HOC/AuthRoute";
-import Navbar from "./Components/Navbar";
+import UserList from "./Components/UserList";
 import jwt from "jsonwebtoken";
 
-function App() {
-  const { dispatch } = useContext(AuthContext);
+function Application() {
+  const { state, dispatch, onAuth } = useContext(AuthContext);
   const history = useHistory();
-  // console.log(props);
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       // onAuth({ method: "CHECKAUTH" });
@@ -29,10 +28,7 @@ function App() {
         dispatch(checkAuth(true));
         dispatch(
           authRequestSuccess({
-            data: {
-              idToken: JSON.parse(localStorage.getItem("token")),
-              localId: JSON.parse(localStorage.getItem("userId")),
-            },
+            data: { idToken: localStorage.getItem("token") },
             message: "",
           })
         );
@@ -41,14 +37,13 @@ function App() {
       } else {
         dispatch(authLogout());
         localStorage.removeItem("token");
-        localStorage.removeItem("userId");
         history.push("/login");
       }
     } else {
       history.push("/login");
     }
     return () => console.log("clear it ");
-  }, [dispatch, history]);
+  }, []);
   return (
     <div className="App">
       <Navbar />
@@ -63,4 +58,4 @@ function App() {
   );
 }
 
-export default App;
+export default Application;

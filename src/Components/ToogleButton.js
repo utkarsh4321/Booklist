@@ -1,5 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { BookListContext } from "../Context/BookList";
+import { AuthContext } from "../Context/AuthContext";
 
 // class ToogleButton extends Component {
 //   static contextType = ThemeContext;
@@ -12,12 +13,13 @@ import { BookListContext } from "../Context/BookList";
 
 const ToogleButton = () => {
   const { state, fetchData } = useContext(BookListContext);
+  const { state: authState } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const bookTitleInput = useRef(null);
   const bookAuthorInput = useRef(null);
   const submitRef = useRef(null);
-
+  // console.log(authState, "This is authState from Toggle");
   // useEffect(() => {
   //   bookTitleInput.current.focus();
   // }, []);
@@ -31,10 +33,18 @@ const ToogleButton = () => {
     if (storedBooks.length) {
       fetchData({
         method: "POST",
-        params: { title, author, index: storedBooks.length - 1 + 1 },
+        params: {
+          title,
+          author,
+          index: storedBooks.length - 1 + 1,
+          userId: authState.authData.localId,
+        },
       });
     } else {
-      fetchData({ method: "POST", params: { title, author, index: 0 } });
+      fetchData({
+        method: "POST",
+        params: { title, author, index: 0, userId: authState.authData.localId },
+      });
     }
     setTitle("");
     setAuthor("");

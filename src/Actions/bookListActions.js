@@ -9,6 +9,13 @@ import {
   SET_INPUT_TITLE,
   GET_SINGLE_BOOKLIST_SUCCESS,
   SET_UPDATE_INPUTS,
+  AUTH_STARTED,
+  AUTH_REQUEST_SUCCESS,
+  AUTH_REQUEST_FAIL,
+  RESET_LOADERS,
+  AUTH_LOGOUT,
+  CHECKAUTH,
+  FRESHEDLOGIN,
 } from "./actionTypes";
 
 export const addBooksAction = (response) => ({
@@ -54,4 +61,41 @@ export const getSingleBooklist = (response) => ({
 export const setUpdateInputs = (response) => ({
   type: SET_UPDATE_INPUTS,
   payload: response,
+});
+
+// ACTION METHODS FOR THE AUTH
+
+export const authStarted = () => ({
+  type: AUTH_STARTED,
+});
+
+export const authRequestSuccess = (response) => ({
+  type: AUTH_REQUEST_SUCCESS,
+  payload: response,
+});
+
+export const authFails = (payload) => ({
+  type: AUTH_REQUEST_FAIL,
+  payload,
+});
+
+export const resetLoaders = (payload) => ({
+  type: RESET_LOADERS,
+  payload,
+});
+
+export const authLogout = () => ({
+  type: AUTH_LOGOUT,
+});
+
+export const checkAuth = (response) => {
+  return {
+    type: CHECKAUTH,
+    payload: response || false,
+  };
+};
+
+export const freshedLogin = (response) => ({
+  type: FRESHEDLOGIN,
+  payload: response || false,
 });
