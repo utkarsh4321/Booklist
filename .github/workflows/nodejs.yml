@@ -12,7 +12,9 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
-
+    env:
+      REACT_APP_API_KEY: AIzaSyDDEeuzfE7OrQR0LieE3D7WWO9-Jqir4JI
+      
     strategy:
       matrix:
         node-version: [12.x]
