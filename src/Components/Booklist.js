@@ -216,7 +216,7 @@ function Booklist(props) {
   //   // booksArrays[index] = {};
   // }
   return (
-    <div className="book-list" onClick={closeInput}>
+    <div className="book-list">
       {state.books.length > 0 ? (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">

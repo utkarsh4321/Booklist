@@ -5,7 +5,7 @@ import "./index.css";
 import AuthContextProvider from "./Context/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 const store = (
-  <Router>
+  <Router basename="/Booklist">
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
