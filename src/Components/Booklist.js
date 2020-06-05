@@ -94,10 +94,7 @@ function Booklist(props) {
   // document.onclick = () => {
   //   dispatch(setUpdateInputs(false));
   // };
-  const closeInput = () => {
-    // console.log("ssaga");
-    dispatch(setUpdateInputs(""));
-  };
+
   const onChangeTitleHandler = (e) => {
     dispatch(setInputTitle({ ...state.booksData, title: e.target.value }));
   };
