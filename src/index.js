@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
 import AuthContextProvider from "./Context/AuthContext";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 const store = (
-  <Router basename="/Booklist">
+  <HashRouter basename="/">
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
-  </Router>
+  </HashRouter>
 );
 ReactDOM.render(store, document.getElementById("root"));
