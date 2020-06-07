@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-// import { BookListContext } from "../Context/BookList";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { authLogout } from "../Actions/bookListActions";
+import { myApp } from "../App";
 // const CouunterContext = React.createContext("123");
 
 // class Navbar extends Component {
@@ -16,7 +16,7 @@ import { authLogout } from "../Actions/bookListActions";
 //             {(themeContext) => {
 //               const { isAuthenticated, toggleAuth } = authContext;
 //               const { name, hobby, isLight, dark, light } = themeContext;
-//               // console.log(this.context.name);
+
 //               const theme = isLight ? light : dark;
 //               return (
 //                 <div style={{ background: theme.bg, color: theme.tc }}>
@@ -44,12 +44,20 @@ import { authLogout } from "../Actions/bookListActions";
 // export default Navbar;
 function Navbar(props) {
   const { state, dispatch } = useContext(AuthContext);
-  const history = useHistory();
   const onLogout = () => {
     dispatch(authLogout());
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    history.push("/");
+    myApp
+      .auth()
+      .signOut()
+      .then(function () {
+        // Sign-out successful.
+      })
+      .catch(function (error) {
+        // An error happened.
+        console.log(error);
+      });
   };
   return (
     <ul>
@@ -57,13 +65,13 @@ function Navbar(props) {
         <Link to="/">Home</Link>
       </li>
 
-      {state?.authData?.idToken ? null : (
+      {state?.isAuthenticated ? null : (
         <li>
           <Link to="login">Login</Link>
         </li>
       )}
       <li>
-        {state?.authData?.idToken ? (
+        {state?.isAuthenticated ? (
           <button type="button" onClick={onLogout}>
             Logout
           </button>

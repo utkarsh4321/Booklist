@@ -1,16 +1,15 @@
 import React, { createContext, useCallback, useReducer } from "react";
 import rootReducer, { initialState } from "../Reducer/AuthReducer";
 import { useHistory } from "react-router-dom";
-import jwt from "jsonwebtoken";
 import {
   authRequestSuccess,
   authFails,
   authStarted,
   removeLoaderAction,
-  authLogout,
   checkAuth,
   freshedLogin,
 } from "../Actions/bookListActions";
+import { myApp } from "../App";
 export const AuthContext = createContext();
 
 const useAuth = () => {
@@ -18,7 +17,7 @@ const useAuth = () => {
   const history = useHistory();
   const onAuth = useCallback(
     async ({ method, params = {} }) => {
-      if (method === "SIGNUP" || method === "SIGNIN") {
+      if (method === "SIGNUP") {
         let baseUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`;
         let payload = {
           email: params.email,
@@ -35,15 +34,7 @@ const useAuth = () => {
         }
 
         dispatch(authStarted());
-        // defaultProject
-        //   .auth()
-        //   .createUserWithEmailAndPassword(params.email, params.password)
-        //   .then((res) => {
-        //     console.log(res);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+
         fetch(baseUrl, {
           method: "POST",
           headers: {
@@ -59,12 +50,8 @@ const useAuth = () => {
             }
           })
           .then((data) => {
-            // console.log(data);
-            const { exp } = jwt.decode(data.idToken);
             dispatch(removeLoaderAction());
             if (method === "SIGNIN") {
-              localStorage.setItem("token", JSON.stringify(data.idToken));
-              localStorage.setItem("userId", JSON.stringify(data.localId));
               dispatch(
                 authRequestSuccess({
                   data: { idToken: data.idToken, localId: data.localId },
@@ -73,7 +60,6 @@ const useAuth = () => {
               );
               dispatch(checkAuth(true));
               dispatch(freshedLogin(true));
-              // console.log(history, "HIstory from signIN");
 
               history.push({
                 pathname: "/booklist",
@@ -82,18 +68,18 @@ const useAuth = () => {
               setTimeout(() => {
                 dispatch(freshedLogin(false));
               }, 5000);
-            } else {
-              dispatch(
-                authRequestSuccess({ message: "user created successfully" })
-              );
             }
+            dispatch(
+              authRequestSuccess({
+                message: "user created successfully please login",
+              })
+            );
 
-            setTimeout(() => {
-              dispatch(authLogout({}));
-            }, exp);
+            // setTimeout(() => {
+            //   dispatch(authLogout({}));
+            // }, exp);
           })
           .catch(async (err) => {
-            // console.log(err, "This is error");
             let {
               error: { message },
             } = await err.json();
@@ -101,29 +87,30 @@ const useAuth = () => {
             dispatch(authFails({ message: message, showError: true }));
           });
       }
-      // if (method === "CHECKAUTH") {
-      //   fetch(
-      //     `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_API_KEY}`,
-      //     {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json;charset=utf-8",
-      //       },
-      //       body: JSON.stringify({
-      //         idToken: JSON.parse(localStorage.getItem("token")),
-      //       }),
-      //     }
-      //   )
-      //     .then((res) => {
-      //       if (res.ok) {
-      //         return res.json();
-      //       } else {
-      //         return Promise.reject(res);
-      //       }
-      //     })
-      //     .then((data) => console.log(data))
-      //     .catch((err) => console.log(err));
-      // }
+      if (method === "SIGNIN") {
+        dispatch(authStarted());
+
+        myApp
+          .auth()
+          .signInWithEmailAndPassword(params.email, params.password)
+          .then((res) => {
+            dispatch(removeLoaderAction());
+
+            dispatch(checkAuth(true));
+            dispatch(freshedLogin(true));
+
+            setTimeout(() => {
+              dispatch(freshedLogin(false));
+            }, 5000);
+          })
+          .catch(function (error) {
+            // Handle Errors here.
+            var errorMessage = error.message;
+            dispatch(removeLoaderAction());
+            dispatch(authFails({ message: errorMessage, showError: true }));
+            // ...
+          });
+      }
 
       return () => console.log("PLease wipe the auth function");
     },

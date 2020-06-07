@@ -19,10 +19,7 @@ const ToogleButton = () => {
   const bookTitleInput = useRef(null);
   const bookAuthorInput = useRef(null);
   const submitRef = useRef(null);
-  // console.log(authState, "This is authState from Toggle");
-  // useEffect(() => {
-  //   bookTitleInput.current.focus();
-  // }, []);
+
   useEffect(() => {
     bookTitleInput.current.focus();
   }, [state.books]);
@@ -30,7 +27,7 @@ const ToogleButton = () => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     let storedBooks = [...state.books];
-    if (storedBooks.length) {
+    if (storedBooks.length > 0) {
       fetchData({
         method: "POST",
         params: {

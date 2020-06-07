@@ -1,11 +1,12 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "./Context/AuthContext";
-
+import firebase from "firebase/app";
+import "firebase/auth";
 // // import Navbar from "./Components/Navbar";
 import {
   checkAuth,
-  authRequestSuccess,
   authLogout,
+  authRequestSuccess,
 } from "./Actions/bookListActions";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import Home from "./Components/Home";
@@ -14,51 +15,59 @@ import Signup from "./Components/Signup";
 import UserList from "./Components/UserList";
 import PrivateRoute from "./HOC/AuthRoute";
 import Navbar from "./Components/Navbar";
-import jwt from "jsonwebtoken";
+
+export const myApp = firebase.initializeApp({
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+});
 
 function App() {
   const { dispatch } = useContext(AuthContext);
   const history = useHistory();
-  // console.log(props);
+  const [loader, setLoader] = useState(true);
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // onAuth({ method: "CHECKAUTH" });
-      const { exp } = jwt.decode(JSON.parse(localStorage.getItem("token")));
-
-      if (exp > new Date().getTime() / 1000) {
+    myApp.auth().onAuthStateChanged(function (user) {
+      setLoader(false);
+      if (user) {
         dispatch(checkAuth(true));
+
+        localStorage.setItem("userId", JSON.stringify(user.uid));
+
         dispatch(
           authRequestSuccess({
             data: {
-              idToken: JSON.parse(localStorage.getItem("token")),
               localId: JSON.parse(localStorage.getItem("userId")),
             },
             message: "",
           })
         );
-        // history.go(0);
-        history.push("/booklist");
+        history.replace("/booklist");
       } else {
         dispatch(authLogout());
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
-        history.push("/login");
+        history.replace("/login");
+        // User is signed out.
+        // ...
       }
-    } else {
-      history.push("/login");
-    }
+    });
+
     return () => console.log("clear it ");
   }, [dispatch, history]);
   return (
     <div className="App">
-      <Navbar />
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <PrivateRoute path="/booklist" component={UserList} />
-        <Route path="/" exact component={Home} />
-        <Redirect to="/" />
-      </Switch>
+      {(loader && <div>Loading...</div>) || (
+        <div>
+          <Navbar />
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <PrivateRoute path="/booklist" component={UserList} />
+            <Route path="/" exact component={Home} />
+            <Redirect to="/" />
+          </Switch>
+        </div>
+      )}
     </div>
   );
 }

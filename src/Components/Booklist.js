@@ -6,6 +6,7 @@ import {
   fetchBooklistSucces,
 } from "../Actions/bookListActions";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// import { AuthContext } from "../Context/AuthContext";
 
 // class Booklist extends Component {
 //   static contextType = ThemeContext;
@@ -67,17 +68,13 @@ const getListStyle = (isDraggingOver) => ({
 function Booklist(props) {
   const { state, fetchData, dispatch } = useContext(BookListContext);
   const [bookItem, setUpdates] = useState({});
-  // const [draggedFrom, setDragFrom] = useState(null);
-  // const [draggedTo, setDragTo] = useState(null);
-  // const [dragged, setDragged] = useState(null);
-  // const [dragedItem, setDragedItem] = useState(null);
+
   const bookUpdateTitleInput = useRef(null);
   const bookUpdateAuthorInput = useRef(null);
 
   function updateHandler(bookObj, e) {
     e.stopPropagation();
-    // console.log(bookObj);
-    // bookUpdateTitleInput.current.focus();
+
     setUpdates(bookObj);
     setTimeout(() => {
       if (bookUpdateTitleInput.current) {
@@ -86,14 +83,7 @@ function Booklist(props) {
     });
     dispatch(setInputTitle(bookObj));
     dispatch(setUpdateInputs(bookObj.id));
-    // console.log(ReactDOM.findDOMNode());
   }
-  // window.onclick = () => {
-  //   dispatch(setUpdateInputs(false));
-  // };
-  // document.onclick = () => {
-  //   dispatch(setUpdateInputs(false));
-  // };
 
   const onChangeTitleHandler = (e) => {
     dispatch(setInputTitle({ ...state.booksData, title: e.target.value }));
@@ -101,12 +91,9 @@ function Booklist(props) {
   const onChangeAuthorHandler = (e) => {
     dispatch(setInputTitle({ ...state.booksData, author: e.target.value }));
   };
-  // function Input({ type, onChange, value }, ref) {
-  //   return <input type={type} onChange={onChange} value={value} ref={ref} />;
-  // }
+
   const onFocusTitle = (e) => {
     if (e.key === "Enter") {
-      // console.log(e);
       bookUpdateAuthorInput.current.focus();
     }
   };
@@ -136,13 +123,12 @@ function Booklist(props) {
     if (result.destination.index === result.source.index) {
       return;
     }
-    // console.log(result.destination, result.source);
+
     const items = reorder(
       state.books,
       result.source.index,
       result.destination.index
     );
-    // console.log(items);
     dispatch(fetchBooklistSucces(items));
     let obj = {};
     for (let i = 0; i <= items.length - 1; i++) {
@@ -150,68 +136,24 @@ function Booklist(props) {
       obj[items[i].id] = items[i];
     }
 
-    // console.log(items);
-    console.log(obj);
-    // // this.setState({
-    // //   items
-    // // });
-    // console.log(obj);
     fetchData({ method: "PUT", params: obj });
   }
 
-  // function onDragHandler(id, index, e) {
-  //   console.log(index, id);
-  //   const dt = e.dataTransfer;
-  //   dt.setData("text/plain", index);
-  //   dt.effectAllowed = "move";
-  //   setDragFrom(index);
-  //   setDragged(true);
-  //   setDragedItem(state.books[index]);
-  //   console.log(e.dataTransfer);
-  //   console.log("On drag handler");
-  // }
-  // function handleDrop(e, index) {
-  //   const pieceOrder = e.dataTransfer.getData("text");
-  //   const booksArray = [...state.books];
+  function removeBooklistHandler({ id, index: removedIndex }, e) {
+    const booksList = JSON.parse(JSON.stringify(state.books));
 
-  //   // let dragedTo = booksArray[draggedTo];
-  //   // setDragged(false);
-  //   // console.log(
-  //   //   booksArray,
-  //   //   "This is bookArray from end",
-  //   //   draggedTo,
-  //   //   draggedFrom
-  //   // );
+    let newBook = booksList.reduce((accumulator, current, index) => {
+      if (current.id !== id) {
+        accumulator[current.id] = current;
+        if (current.index > removedIndex) {
+          accumulator[current.id]["index"] = index - 1;
+        }
+      }
+      return accumulator;
+    }, {});
 
-  //   // let dragedFrom = booksArray[draggedFrom];
-  //   // booksArray[draggedTo] = dragedFrom;
-  //   // booksArray[draggedFrom] = dragedTo;
-  //   console.log(dragedItem, index, pieceOrder);
-  //   const data = booksArray.find((item, i) => i === index);
-  //   booksArray.length = 0;
-  //   console.log(booksArray);
-  //   console.log(data);
-  //   booksArray[index] = dragedItem;
-  //   booksArray[+pieceOrder] = data;
-  //   dispatch(fetchBooklistSucces(booksArray));
-  // }
-  // function onDragEnterHandler(id, index, e) {
-  //   const booksArrays = [...state.books];
-  //   console.log(booksArrays, "This is bookArray", draggedFrom, index);
-  //   setDragTo(index);
-  //   if (index !== draggedFrom) {
-  //     let dragedTo = booksArrays[index];
-
-  //     let dragedFrom = booksArrays[draggedFrom];
-  //     // booksArrays[index] = {};
-  //     booksArrays[draggedFrom] = dragedTo;
-  //     console.log(dragedTo, dragedFrom, booksArrays);
-  //     dispatch(fetchBooklistSucces(booksArrays));
-  //   }
-  //   // const data = booksArrays.find((item, i) => i === index);
-  //   // booksArrays[dragFrom] = data;
-  //   // booksArrays[index] = {};
-  // }
+    fetchData({ method: "DELETE", params: { obj: newBook, id } });
+  }
   return (
     <div className="book-list">
       {state.books.length > 0 ? (
@@ -223,7 +165,7 @@ function Booklist(props) {
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
-                {state.books.map(({ id, title, author }, index) => (
+                {state.books.map(({ id, title, author, userId }, index) => (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided, snapshot) => (
                       <li
@@ -262,23 +204,22 @@ function Booklist(props) {
                               author}
                           </div>
                         </div>
-                        {/*<button onClick={() => fetchData({ method: "id", params: id })}>
-                    Update
-              </button>*/}
                         <button
                           onClick={updateHandler.bind(this, {
                             id,
                             title,
                             author,
                             index,
+                            userId,
                           })}
                         >
                           Update
                         </button>
                         <button
-                          onClick={() =>
-                            fetchData({ method: "DELETE", params: id })
-                          }
+                          onClick={removeBooklistHandler.bind(this, {
+                            id,
+                            index,
+                          })}
                           className="remove_btn"
                         >
                           X

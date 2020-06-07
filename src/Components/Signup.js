@@ -54,7 +54,6 @@ const Signup = (props) => {
       dispatch(resetLoaders(false));
     }, 3000);
   }
-  // console.log(state);
   return (
     <div>
       <h3>signup</h3>
