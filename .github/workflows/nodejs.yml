@@ -26,6 +26,7 @@ jobs:
       - run: npm run build
         env:
           REACT_APP_API_KEY: ${{secrets.API_KEY}}
+          REACT_APP_AUTHDOMAIN: ${{secrets.REACT_APP_AUTHDOMAIN}} 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
